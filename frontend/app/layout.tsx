@@ -12,8 +12,8 @@ const outfit = Outfit({
 });
 
 export const metadata: Metadata = {
-  title: "College Notes Sharing",
-  description: "Share and discover college resources",
+  title: "Econote - College Notes Sharing",
+  description: "Share and discover college resources on Econote",
 };
 
 export default function RootLayout({

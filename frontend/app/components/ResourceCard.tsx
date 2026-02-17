@@ -1,6 +1,8 @@
+'use client';
 
 import Link from 'next/link';
-import { Book, FileText, Download, Eye, School, Calendar, Star } from 'lucide-react';
+import { Book, Eye, School, Calendar, Edit, ArrowBigUp } from 'lucide-react';
+import { useAuth } from '../context/AuthContext';
 
 interface Resource {
   _id: string;
@@ -9,17 +11,23 @@ interface Resource {
   semester: number;
   type: string;
   privacy: string;
-  uploader?: {
-    name: string;
-    college?: string;
-  };
+  uploader?: any; // strict typing can be tricky with populate, keep it flexible or use union string | object
   collegeOfOrigin: string;
-  averageRating: number;
+  score: number;
   updatedAt: string;
 }
 
 const ResourceCard = ({ resource }: { resource: Resource }) => {
+  const { user } = useAuth();
   const isPrivate = resource.privacy === 'Private';
+
+  // Determine if current user is the uploader
+  // resource.uploader can be an ID string or an object depending on populate
+  const uploaderId = typeof resource.uploader === 'string' 
+    ? resource.uploader 
+    : resource.uploader?._id;
+  
+  const isOwner = user && uploaderId === user._id;
 
   return (
     <div className="group bg-white rounded-xl shadow-sm border border-gray-100 hover:shadow-lg transition-all duration-300 transform hover:-translate-y-1 overflow-hidden flex flex-col h-full">
@@ -37,7 +45,7 @@ const ResourceCard = ({ resource }: { resource: Resource }) => {
             </span>
         </div>
 
-        <h3 className="font-bold text-gray-900 text-lg mb-1 line-clamp-2 min-h-[3.5rem] group-hover:text-blue-600 transition-colors">
+        <h3 className="font-bold text-gray-900 text-lg mb-1 line-clamp-2 min-h-[3.5rem] group-hover:text-orange-600 transition-colors">
             {resource.title}
         </h3>
         
@@ -52,19 +60,31 @@ const ResourceCard = ({ resource }: { resource: Resource }) => {
                     <School size={14} />
                     <span className="truncate max-w-[120px]">{resource.collegeOfOrigin}</span>
                 </div>
-                <div className="flex items-center gap-1 text-yellow-500 font-bold">
-                    <Star size={14} fill="currentColor" />
-                    <span>{resource.averageRating?.toFixed(1) || '0.0'}</span>
+                <div className="flex items-center gap-1 text-orange-600 font-bold">
+                    <ArrowBigUp size={20} fill="currentColor" />
+                    <span>{resource.score || 0}</span>
                 </div>
             </div>
             
-            <Link 
-                href={`/resources/${resource._id}`}
-                className="w-full mt-2 inline-flex justify-center items-center py-2.5 text-sm font-semibold text-blue-600 bg-blue-50 hover:bg-blue-600 hover:text-white rounded-lg transition-colors gap-2"
-            >
-                View Details
-                <Eye size={16} />
-            </Link>
+            <div className="flex gap-2">
+                <Link 
+                    href={`/resources/${resource._id}`}
+                    className="flex-1 inline-flex justify-center items-center py-2.5 text-sm font-semibold text-orange-600 bg-orange-50 hover:bg-orange-600 hover:text-white rounded-lg transition-colors gap-2"
+                >
+                    View
+                    <Eye size={16} />
+                </Link>
+                
+                {isOwner && (
+                    <Link 
+                        href={`/resources/edit/${resource._id}`}
+                        className="inline-flex justify-center items-center px-3 py-2.5 text-sm font-semibold text-gray-600 bg-gray-100 hover:bg-gray-200 hover:text-gray-900 rounded-lg transition-colors"
+                        title="Edit Resource"
+                    >
+                        <Edit size={16} />
+                    </Link>
+                )}
+            </div>
         </div>
       </div>
     </div>

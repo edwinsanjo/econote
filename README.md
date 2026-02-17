@@ -1,5 +1,5 @@
 
-# College Notes Sharing App
+# Econote - College Resource Sharing App
 
 A full-stack application for sharing college resources like notes, question papers, and more.
 

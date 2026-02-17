@@ -43,7 +43,15 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
       localStorage.setItem('x-auth-token', data.token);
       setToken(data.token);
       setUser(data);
-      router.push('/');
+      
+      // Role-based redirect
+      if (data.role === 'app_admin') {
+          router.push('/dashboard/app-admin');
+      } else if (data.role === 'college_admin') {
+          router.push('/dashboard/college-admin');
+      } else {
+          router.push('/');
+      }
     } catch (error: any) {
       throw new Error(error.response?.data?.message || 'Login failed');
     }
@@ -67,7 +75,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   };
 
   return (
-    <AuthContext.Provider value={{ user, token, loading, login, register, logout }}>
+    <AuthContext.Provider value={{ user, setUser, token, loading, login, register, logout }}>
       {children}
     </AuthContext.Provider>
   );

@@ -16,26 +16,26 @@ const Navbar = () => {
       <div className="container mx-auto px-4">
         <div className="flex justify-between items-center h-16">
           {/* Logo */}
-          <Link href="/" className="flex items-center gap-2 text-2xl font-bold text-blue-600 tracking-tight hover:opacity-80 transition">
-            <div className="bg-blue-600 text-white p-1.5 rounded-lg">
+          <Link href="/" className="flex items-center gap-2 text-2xl font-bold text-orange-600 tracking-tight hover:opacity-80 transition">
+            <div className="bg-orange-600 text-white p-1.5 rounded-lg">
                 <BookOpen size={20} />
             </div>
-            CollegeNotes
+            Econote
           </Link>
 
           {/* Desktop Nav */}
           <div className="hidden md:flex items-center gap-6">
             {user ? (
               <>
-                 <Link href="/" className="text-sm font-medium text-gray-600 hover:text-blue-600 transition">
+                 <Link href="/" className="text-sm font-medium text-gray-600 hover:text-orange-600 transition">
                   Browse
                 </Link>
-                <Link href="/upload" className="flex items-center gap-2 text-sm font-medium text-gray-600 hover:text-blue-600 transition">
+                <Link href="/upload" className="flex items-center gap-2 text-sm font-medium text-gray-600 hover:text-orange-600 transition">
                   <Upload size={16} />
                   Upload
                 </Link>
                 <div className="h-6 w-px bg-gray-200" />
-                <Link href="/profile" className="flex items-center gap-2 text-sm font-medium text-gray-600 hover:text-blue-600 transition">
+                <Link href="/profile" className="flex items-center gap-2 text-sm font-medium text-gray-600 hover:text-orange-600 transition">
                   <User size={16} />
                   <span>{user.name.split(' ')[0]}</span>
                 </Link>
@@ -49,10 +49,10 @@ const Navbar = () => {
               </>
             ) : (
               <>
-                <Link href="/login" className="text-sm font-medium text-gray-600 hover:text-blue-600 transition">
+                <Link href="/login" className="text-sm font-medium text-gray-600 hover:text-orange-600 transition">
                   Login
                 </Link>
-                <Link href="/register" className="bg-blue-600 text-white px-5 py-2 rounded-full text-sm font-medium hover:bg-blue-700 shadow-lg shadow-blue-600/20 transition transform hover:-translate-y-0.5">
+                <Link href="/register" className="bg-orange-600 text-white px-5 py-2 rounded-full text-sm font-medium hover:bg-orange-700 shadow-lg shadow-orange-600/20 transition transform hover:-translate-y-0.5">
                   Get Started
                 </Link>
               </>
@@ -89,7 +89,7 @@ const Navbar = () => {
               ) : (
                 <>
                   <Link href="/login" onClick={() => setIsOpen(false)} className="p-2 hover:bg-gray-50 rounded-md font-medium text-gray-700">Login</Link>
-                  <Link href="/register" onClick={() => setIsOpen(false)} className="p-2 bg-blue-600 text-white rounded-md font-medium text-center">Register</Link>
+                  <Link href="/register" onClick={() => setIsOpen(false)} className="p-2 bg-orange-600 text-white rounded-md font-medium text-center">Register</Link>
                 </>
               )}
             </div>

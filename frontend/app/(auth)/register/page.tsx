@@ -1,6 +1,7 @@
 
 'use client';
 
+import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { useAuth } from '../../context/AuthContext';
 import Link from 'next/link';
@@ -10,8 +11,10 @@ import { UserPlus, User, Mail, Lock, Building, GraduationCap, BookOpen, Layers }
 const RegisterPage = () => {
     const { register, handleSubmit } = useForm();
     const { register: registerUser } = useAuth(); // rename to avoid conflict with hook form
+    const [isLoading, setIsLoading] = useState(false);
 
     const onSubmit = async (data: any) => {
+        setIsLoading(true);
         try {
             await registerUser(data); 
             // registerUser in context currently redirects to home, we need to change that logic
@@ -24,7 +27,8 @@ const RegisterPage = () => {
             // Let's update the context `register` function in the next step. 
             // But for now let's assume `registerUser` (renamed from `register` in the component) returns the email or we pass it.
         } catch (err: any) {
-            alert(err.message);
+            console.error(err);
+            setIsLoading(false);
         }
     };
 
@@ -46,7 +50,7 @@ const RegisterPage = () => {
                              <label className="block text-sm font-medium text-gray-700 mb-1.5 ml-1">Full Name</label>
                              <div className="relative">
                                 <User className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" size={18} />
-                                <input {...register('name')} className="w-full pl-10 p-3 bg-gray-50 border border-gray-200 rounded-xl focus:ring-2 focus:ring-blue-500 outline-none" placeholder="John Doe" required />
+                                <input {...register('name')} className="w-full pl-10 p-3 bg-gray-50 border border-gray-200 rounded-xl focus:ring-2 focus:ring-orange-500 outline-none" placeholder="John Doe" required />
                              </div>
                         </div>
 
@@ -54,7 +58,7 @@ const RegisterPage = () => {
                              <label className="block text-sm font-medium text-gray-700 mb-1.5 ml-1">Email</label>
                              <div className="relative">
                                 <Mail className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" size={18} />
-                                <input {...register('email')} type="email" className="w-full pl-10 p-3 bg-gray-50 border border-gray-200 rounded-xl focus:ring-2 focus:ring-blue-500 outline-none" placeholder="you@college.edu" required />
+                                <input {...register('email')} type="email" className="w-full pl-10 p-3 bg-gray-50 border border-gray-200 rounded-xl focus:ring-2 focus:ring-orange-500 outline-none" placeholder="you@college.edu" required />
                              </div>
                         </div>
 
@@ -62,47 +66,52 @@ const RegisterPage = () => {
                              <label className="block text-sm font-medium text-gray-700 mb-1.5 ml-1">Password</label>
                               <div className="relative">
                                 <Lock className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" size={18} />
-                                <input {...register('password')} type="password" className="w-full pl-10 p-3 bg-gray-50 border border-gray-200 rounded-xl focus:ring-2 focus:ring-blue-500 outline-none" placeholder="••••••••" required />
-                             </div>
+                                <input {...register('password')} type="password" className="w-full pl-10 p-3 bg-gray-50 border border-gray-200 rounded-xl focus:ring-2 focus:ring-orange-500 outline-none" placeholder="••••••••" required />
+                              </div>
                         </div>
 
                         <div className="md:col-span-2">
                              <label className="block text-sm font-medium text-gray-700 mb-1.5 ml-1">College Name</label>
                               <div className="relative">
                                 <Building className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" size={18} />
-                                <input {...register('college')} className="w-full pl-10 p-3 bg-gray-50 border border-gray-200 rounded-xl focus:ring-2 focus:ring-blue-500 outline-none" placeholder="Institute of Technology" required />
-                             </div>
+                                <input {...register('college')} className="w-full pl-10 p-3 bg-gray-50 border border-gray-200 rounded-xl focus:ring-2 focus:ring-orange-500 outline-none" placeholder="Institute of Technology" required />
+                              </div>
                         </div>
 
                         <div>
                              <label className="block text-sm font-medium text-gray-700 mb-1.5 ml-1">Branch/Dept</label>
                               <div className="relative">
                                 <Layers className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" size={18} />
-                                <input {...register('branch')} className="w-full pl-10 p-3 bg-gray-50 border border-gray-200 rounded-xl focus:ring-2 focus:ring-blue-500 outline-none" placeholder="Computer Science" required />
-                             </div>
+                                <input {...register('branch')} className="w-full pl-10 p-3 bg-gray-50 border border-gray-200 rounded-xl focus:ring-2 focus:ring-orange-500 outline-none" placeholder="Computer Science" required />
+                              </div>
                         </div>
 
                         <div>
                              <label className="block text-sm font-medium text-gray-700 mb-1.5 ml-1">Current Semester</label>
                               <div className="relative">
                                 <GraduationCap className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" size={18} />
-                                <input {...register('semester')} type="number" className="w-full pl-10 p-3 bg-gray-50 border border-gray-200 rounded-xl focus:ring-2 focus:ring-blue-500 outline-none" placeholder="3" required />
-                             </div>
+                                <input {...register('semester')} type="number" className="w-full pl-10 p-3 bg-gray-50 border border-gray-200 rounded-xl focus:ring-2 focus:ring-orange-500 outline-none" placeholder="3" required />
+                              </div>
                         </div>
                     </div>
 
                     <button 
                         type="submit" 
-                        className="w-full bg-blue-600 text-white py-3.5 rounded-xl font-bold hover:bg-blue-700 shadow-lg shadow-blue-500/30 transition transform hover:-translate-y-0.5 flex justify-center items-center gap-2 mt-6"
+                        disabled={isLoading}
+                        className={`w-full bg-orange-600 text-white py-3.5 rounded-xl font-bold hover:bg-orange-700 shadow-lg shadow-orange-500/30 transition transform hover:-translate-y-0.5 flex justify-center items-center gap-2 mt-6 ${isLoading ? 'opacity-70 cursor-not-allowed' : ''}`}
                     >
-                        <UserPlus size={20} />
-                        Create Account
+                        {isLoading ? (
+                            <div className="w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin"></div>
+                        ) : (
+                            <UserPlus size={20} />
+                        )}
+                        {isLoading ? 'Creating Account...' : 'Create Account'}
                     </button>
                 </form>
 
                 <p className="mt-8 text-center text-sm text-gray-500">
                     Already have an account?{' '}
-                    <Link href="/login" className="text-blue-600 font-semibold hover:underline">
+                    <Link href="/login" className="text-orange-600 font-semibold hover:underline">
                         Log In
                     </Link>
                 </p>

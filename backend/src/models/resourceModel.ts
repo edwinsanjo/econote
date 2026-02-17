@@ -45,9 +45,22 @@ const resourceSchema = new mongoose.Schema({
         type: String,
         required: true,
     },
-    averageRating: {
+    upvotes: {
         type: Number,
         default: 0,
+    },
+    downvotes: {
+        type: Number,
+        default: 0,
+    },
+    score: {
+        type: Number,
+        default: 0,
+    },
+    voters: {
+        type: Map,
+        of: Number,
+        default: {},
     },
     views: {
         type: Number,

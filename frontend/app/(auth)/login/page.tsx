@@ -15,7 +15,13 @@ const LoginPage = () => {
     try {
       await login(data);
     } catch (err: any) {
-      alert(err.message);
+      if (err.message.includes('verify')) {
+          if(confirm('Email not verified. Do you want to resend the verification code?')) {
+               window.location.href = '/verify/resend';
+          }
+      } else {
+         alert(err.message);
+      }
     }
   };
 
@@ -39,7 +45,7 @@ const LoginPage = () => {
                 <input
                     {...register('email')}
                     type="email"
-                    className="w-full pl-10 pr-4 py-3 bg-gray-50 border border-gray-200 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none transition"
+                    className="w-full pl-10 pr-4 py-3 bg-gray-50 border border-gray-200 rounded-xl focus:ring-2 focus:ring-orange-500 focus:border-transparent outline-none transition"
                     placeholder="student@college.edu"
                     required
                 />
@@ -52,7 +58,7 @@ const LoginPage = () => {
                 <input
                     {...register('password')}
                     type="password"
-                    className="w-full pl-10 pr-4 py-3 bg-gray-50 border border-gray-200 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none transition"
+                    className="w-full pl-10 pr-4 py-3 bg-gray-50 border border-gray-200 rounded-xl focus:ring-2 focus:ring-orange-500 focus:border-transparent outline-none transition"
                     placeholder="••••••••"
                     required
                 />
@@ -61,7 +67,7 @@ const LoginPage = () => {
           
           <button 
             type="submit" 
-            className="w-full bg-blue-600 text-white py-3.5 rounded-xl font-bold hover:bg-blue-700 shadow-lg shadow-blue-500/30 transition transform hover:-translate-y-0.5 flex justify-center items-center gap-2"
+            className="w-full bg-orange-600 text-white py-3.5 rounded-xl font-bold hover:bg-orange-700 shadow-lg shadow-orange-500/30 transition transform hover:-translate-y-0.5 flex justify-center items-center gap-2"
           >
             <LogIn size={20} />
             Sign In
@@ -70,7 +76,7 @@ const LoginPage = () => {
 
         <p className="mt-8 text-center text-sm text-gray-500">
           Don't have an account?{' '}
-          <Link href="/register" className="text-blue-600 font-semibold hover:underline">
+          <Link href="/register" className="text-orange-600 font-semibold hover:underline">
             Create Account
           </Link>
         </p>
